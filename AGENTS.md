@@ -15,10 +15,11 @@ scripts/{lint, format, test, run}
 ```
 
 ## Build, Test, and Development Commands
-- Setup: `make setup` (create venv, install deps). If no Makefile, run `python -m venv .venv && source .venv/bin/activate && pip install -e .[dev]`.
-- Test: `make test` or `pytest -q` (runs all tests).
-- Lint/Format: `make lint` / `make format` or `ruff check .` and `black .`.
-- Run locally: `make run ARGS="..."` or `python -m transcriptor ...` (when CLI exists).
+- Setup: `make venv` (create venv). Optional: `make install-whisper` for local STT.
+- Run script: `make run ARGS="..."` (pass flags to scripts/meeting_minutes.py).
+- OpenRouter flow (recommended): `make minutes FILE=Session.m4a OUT=minutes.txt`.
+- Test: `make test` or `pytest -q` (if tests exist).
+- Lint/Format: `ruff check .` and `black .` (if configured).
 
 ## Coding Style & Naming Conventions
 - Language: Python 3.11+.
@@ -41,3 +42,8 @@ scripts/{lint, format, test, run}
 - Do not commit secrets or large datasets. Use `.env.local` (gitignored) and document keys in `.env.example`.
 - Validate and sanitize external inputs (paths, URLs). Prefer streaming for large files.
 - Pin dependencies for reproducibility; upgrade in dedicated PRs.
+
+## OpenRouter Usage
+- Set `OPENROUTER_API_KEY` in your environment or `.env`.
+- Use audio‑capable chat models with `--stt-chat-model` (e.g., `google/gemini-2.5-flash-lite`, `openai/gpt-4o-audio-preview`).
+- The tool splits long audio and sends base64 WAV segments via chat/completions using `input_audio` content.
