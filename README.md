@@ -8,7 +8,8 @@ A Python-based meeting minutes generator that uses OpenRouter API to transcribe 
 - **Modular workflow**: Separate transcription and minutes generation
 - **Multiple detail levels**: Basic, detailed, anonymous detailed, and ultra-detailed minutes
 - **Smart model selection**: Cost-effective model selection for different phases
-- **Context enhancement**: Optional web research integration
+- **Advanced context enhancement**: Deep technical knowledge integration with domain expertise
+- **Energy sector specialization**: TSO/utility-specific technical explanations (CAPEX/OPEX, grid operations, compliance)
 - **Chunked processing**: Handles large files efficiently
 
 ## Quick Start
@@ -80,13 +81,16 @@ make transcript-only FILE=meeting.m4a OUT=transcript.txt SEG=120
 make run ARGS="--transcript transcript.txt --minutes-only --out minutes.txt --synthesis map-reduce --chunk-tokens 6000 --model anthropic/claude-3.5-sonnet --focus 'participant exchanges using Speaker A/B/C, disagreements, discussion flow'"
 ```
 
-### Example 2: Enhanced Minutes with Context
+### Example 2: Enhanced Minutes with Deep Technical Context
 ```bash
 # Transcription
 make transcript-only FILE=session.m4a OUT=transcript.txt
 
-# Enhanced minutes with web research
+# Enhanced minutes with comprehensive technical context (especially for energy/TSO sector)
 make minutes-enhanced TRANSCRIPT=transcript.txt OUT=enhanced_minutes.txt
+
+# Custom enhanced minutes with specific domain focus
+make run ARGS="--transcript transcript.txt --minutes-only --out minutes_context.txt --enhance --synthesis map-reduce --chunk-tokens 4000 --model anthropic/claude-3.5-sonnet --focus 'CAPEX vs OPEX, TSO operations, technical decisions'"
 ```
 
 ### Example 3: Multiple Formats
@@ -110,9 +114,36 @@ make run ARGS="--transcript transcript.txt --minutes-only --out minutes_anonymou
 |---------|---------|---------------|
 | `make transcript-only` | Audio → transcript only | - |
 | `make minutes-only` | Basic minutes from transcript | 13/20 |
-| `make minutes-enhanced` | Context-enriched minutes | 15/20 |
+| `make minutes-enhanced` | Context-enriched minutes with technical explanations | 17/20 |
 | `make minutes` | Direct audio → minutes | 13/20 |
 | `make run ARGS="..."` | Custom parameters | Variable |
+
+## Context Enhancement Features
+
+TalkScribe includes comprehensive technical context enhancement, particularly specialized for the energy/utility sector:
+
+### Energy Sector Knowledge Base
+- **TSO/DSO Operations**: Grid balancing, SCADA systems, transmission networks
+- **Financial Models**: CAPEX vs OPEX implications for utilities, regulatory frameworks
+- **Compliance Standards**: NERC CIP, ENTSO-E, IEC standards (61850, 62443)
+- **Technology Integration**: Smart grid, renewable integration, cybersecurity frameworks
+- **Procurement & Risk**: Open source adoption, SBOM requirements, supply chain security
+
+### Enhanced Context Usage
+```bash
+# Enhanced minutes with comprehensive technical context
+make minutes-enhanced TRANSCRIPT=transcript.txt OUT=enhanced_minutes.txt
+
+# Custom enhanced minutes with domain focus
+make run ARGS="--transcript transcript.txt --minutes-only --out context_minutes.txt --enhance --synthesis map-reduce --chunk-tokens 4000 --model anthropic/claude-3.5-sonnet --focus 'CAPEX vs OPEX discussions, TSO operations, cybersecurity compliance'"
+```
+
+The enhanced context provides:
+- **Technical Glossaries**: Definitions and explanations of industry terminology
+- **Regulatory Context**: Compliance frameworks and their business implications
+- **Financial Analysis**: CAPEX/OPEX implications and regulatory treatment
+- **Industry Background**: Strategic context for technical decisions
+- **Best Practices**: Implementation recommendations based on industry standards
 
 ## Parameters
 

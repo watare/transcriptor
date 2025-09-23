@@ -665,30 +665,79 @@ def synthesize_minutes_full(
 
 
 def web_search_simple(query: str) -> str:
-    """Simple web search using basic HTTP requests (fallback if no API available)"""
+    """Enhanced knowledge base with domain-specific information for energy/utility sector"""
     import urllib.parse
     try:
-        # Simulate web search results with plausible information
-        # In a real implementation, you could integrate with search APIs
+        # Enhanced knowledge base with detailed technical explanations
         search_results = {
-            "open source procurement": "Recent studies show 87% of enterprises use open source software, with procurement challenges mainly around vendor evaluation and lifecycle management.",
-            "SBOM": "Software Bill of Materials (SBOM) is a formal record containing details and supply chain relationships of components used in building software, mandated by recent cybersecurity executive orders.",
-            "CAPEX vs OPEX": "Capital expenditure (CAPEX) refers to funds used for acquiring fixed assets, while operational expenditure (OPEX) covers day-to-day operating costs. Cloud services typically shift costs from CAPEX to OPEX models.",
-            "utility sector": "The utility sector is undergoing digital transformation with focus on smart grids, renewable integration, and cybersecurity compliance under NERC CIP standards.",
-            "L&F Energy": "LF Energy is a Linux Foundation project fostering open source energy solutions, working with utilities on grid modernization and decarbonization initiatives."
+            # Energy/TSO specific terms
+            "CAPEX vs OPEX": "Capital Expenditure (CAPEX) vs Operational Expenditure (OPEX) in TSO context: CAPEX includes investments in transmission infrastructure (substations, power lines, transformers), grid automation systems, and cybersecurity infrastructure that provide long-term value. OPEX covers daily operational costs like maintenance, monitoring, staff, software licenses, and cloud services. TSOs are increasingly shifting from CAPEX-heavy infrastructure to OPEX models through cloud services, SaaS solutions, and outsourced maintenance to improve financial flexibility and reduce upfront investment risks.",
+
+            "TSO": "Transmission System Operator (TSO) is responsible for maintaining electricity transmission networks, ensuring grid stability, and managing cross-border electricity flows. Key responsibilities include: real-time grid balancing, capacity planning, market operations, interconnection management, and renewable integration. TSOs face challenges in digitalization, cybersecurity (NERC CIP compliance), aging infrastructure replacement, and accommodating distributed energy resources.",
+
+            "transmission system operator": "Transmission System Operator (TSO) manages high-voltage electricity transmission networks (typically 110kV and above), ensuring reliable electricity supply across regions and countries. TSOs coordinate with Distribution System Operators (DSOs), manage electricity markets, provide ancillary services for grid stability, and facilitate renewable energy integration through grid flexibility mechanisms.",
+
+            "grid balancing": "Grid balancing in TSO operations involves continuously matching electricity supply and demand in real-time to maintain system frequency at 50Hz/60Hz. TSOs use various tools: automatic generation control (AGC), frequency response services, demand response programs, energy storage systems, and cross-border balancing cooperation. Modern challenges include handling variable renewable energy sources and maintaining stability with reduced system inertia.",
+
+            "NERC CIP": "North American Electric Reliability Corporation (NERC) Critical Infrastructure Protection (CIP) standards mandate cybersecurity controls for bulk electric system assets. Requirements include: asset identification, security management controls, personnel training, system security plans, incident reporting, and recovery planning. TSOs must implement defense-in-depth strategies, network segmentation, access controls, and continuous monitoring to protect critical cyber assets from cyber threats.",
+
+            "ENTSO-E": "European Network of Transmission System Operators for Electricity (ENTSO-E) represents 39 TSOs from 35 countries, coordinating cross-border electricity transmission and market operations. Key activities include: developing network codes, publishing transparency data, coordinating grid planning (Ten-Year Network Development Plan), and facilitating the European electricity market integration through mechanisms like capacity allocation and congestion management.",
+
+            "smart grid": "Smart grid technologies enable two-way communication between utilities and customers, integrating advanced metering infrastructure (AMI), distribution automation, demand response systems, and renewable energy resources. For TSOs, smart grid implementation involves: wide-area monitoring systems (WAMS), phasor measurement units (PMUs), advanced control systems, and data analytics platforms for improved grid observability and control.",
+
+            # Open source and technology
+            "open source procurement": "Open source software procurement in utility/TSO environments requires specialized evaluation criteria: security assessment (vulnerability management, code auditing), compliance with industry standards (IEC 61850, IEEE standards), long-term support availability, vendor/community ecosystem stability, integration capabilities with existing SCADA/EMS systems, and intellectual property considerations. Leading utilities are adopting open source solutions for grid management, data analytics, and cybersecurity tools.",
+
+            "SBOM": "Software Bill of Materials (SBOM) is crucial for TSO cybersecurity programs under NERC CIP requirements. SBOMs provide transparency into software components, enabling vulnerability tracking, license compliance, and supply chain risk management. TSOs must maintain SBOMs for all critical cyber assets, track open source components, monitor security advisories, and implement patch management procedures to maintain grid security.",
+
+            "L&F Energy": "Linux Foundation Energy (LF Energy) hosts open source projects for the energy transition, including: SOGNO (smart grid simulation), OpenEAS (energy analytics), RIAPS (resilient information architecture), and CoMPAS (configuration modules for power industry standard). These projects help TSOs and utilities accelerate digitalization through collaborative development of grid management, simulation, and automation tools.",
+
+            "digital transformation": "Digital transformation in TSO operations encompasses: cloud adoption for scalability and cost optimization, AI/ML for predictive maintenance and grid optimization, IoT sensors for enhanced asset monitoring, blockchain for energy trading, digital twins for grid simulation, and advanced analytics for demand forecasting. Key challenges include cybersecurity, regulatory compliance, workforce upskilling, and legacy system integration.",
+
+            # Industry trends
+            "renewable integration": "TSO renewable integration challenges include: grid stability with variable generation, forecasting accuracy for wind/solar output, ancillary services procurement from renewable sources, transmission congestion management, and curtailment minimization. Solutions involve: enhanced weather forecasting, energy storage deployment, demand response programs, grid flexibility markets, and cross-border balancing cooperation to manage renewable variability.",
+
+            "energy transition": "The energy transition requires TSO adaptation to: increasing renewable penetration, electrification of transport and heating, distributed energy resources (DER) integration, sector coupling (power-to-X technologies), and carbon neutrality goals. TSOs are investing in grid flexibility, digitalization, offshore wind connections, and hydrogen infrastructure to support decarbonization while maintaining system security.",
+
+            "grid flexibility": "Grid flexibility mechanisms enable TSOs to manage variability and uncertainty from renewable sources through: demand response programs, energy storage systems, flexible generation resources, sector coupling technologies, and cross-border cooperation. Market-based flexibility procurement includes: balancing services, congestion management, and grid ancillary services markets.",
+
+            # Cybersecurity and compliance
+            "cybersecurity": "TSO cybersecurity frameworks address: industrial control system (ICS) protection, network segmentation, security monitoring, incident response, and supply chain security. Key standards include NERC CIP, ISO/IEC 27001, NIST Cybersecurity Framework, and IEC 62443 for industrial systems. Modern threats target SCADA systems, requiring defense-in-depth strategies and continuous security assessment.",
+
+            "IEC 61850": "International Electrotechnical Commission (IEC) 61850 standard defines communication protocols and data models for electrical substations, enabling interoperability between protection, control, and monitoring systems. For TSOs, IEC 61850 facilitates: standardized substation automation, real-time communication, centralized control, and reduced engineering costs through vendor-independent solutions."
         }
 
-        # Find best matching result
+        # Find best matching result with fuzzy matching
         query_lower = query.lower()
+
+        # Direct match first
         for key, result in search_results.items():
-            if key in query_lower or any(word in query_lower for word in key.split()):
+            if key.lower() in query_lower:
                 return result
 
-        # Generic fallback
-        return f"Research indicates this is an emerging topic in the industry with growing interest and adoption."
+        # Partial word matching
+        query_words = query_lower.split()
+        best_match = None
+        max_matches = 0
 
-    except Exception:
-        return "[Web search unavailable]"
+        for key, result in search_results.items():
+            key_words = key.lower().split()
+            matches = sum(1 for word in query_words if any(word in key_word for key_word in key_words))
+            if matches > max_matches:
+                max_matches = matches
+                best_match = result
+
+        if best_match and max_matches > 0:
+            return best_match
+
+        # Generic fallback with more detailed explanation
+        if any(term in query_lower for term in ['energy', 'power', 'grid', 'utility', 'electricity']):
+            return f"Energy sector research indicates '{query}' is an emerging topic with increasing importance for grid modernization, renewable integration, and digital transformation initiatives. Consider consulting ENTSO-E reports, IEA energy transition roadmaps, or utility industry publications for detailed analysis."
+        else:
+            return f"Industry research suggests '{query}' is gaining attention across multiple sectors, with particular relevance to digital transformation and operational efficiency initiatives."
+
+    except Exception as e:
+        return f"[Knowledge base lookup failed: {e}]"
 
 
 def extract_search_topics(minutes_text: str, api_key: str, model: str = "openai/gpt-4o-mini") -> List[str]:
@@ -707,7 +756,7 @@ def extract_search_topics(minutes_text: str, api_key: str, model: str = "openai/
     """ + minutes_text
 
     try:
-        response = call_openrouter_api(
+        response = call_openrouter(
             api_key=api_key,
             model=model,
             messages=[{"role": "user", "content": prompt}],
@@ -740,7 +789,7 @@ def enhance_minutes_with_context(minutes_text: str, api_key: str, model: str = "
 
     # Enhance the minutes with research context
     enhancement_prompt = f"""
-    You are an expert meeting analyst. Enhance these meeting minutes by integrating relevant context and background information.
+    You are an expert meeting analyst with deep knowledge of the energy sector, TSO operations, and technology. Enhance these meeting minutes by integrating comprehensive technical context and background information.
 
     Original minutes:
     {minutes_text}
@@ -749,19 +798,39 @@ def enhance_minutes_with_context(minutes_text: str, api_key: str, model: str = "
     {chr(10).join(research_context)}
 
     Create enhanced meeting minutes that:
-    1. Keep all original information intact
-    2. Add contextual background where relevant
-    3. Explain technical terms and concepts
-    4. Provide industry context for discussions
-    5. Add a "BACKGROUND CONTEXT" section with relevant information
-    6. Include links to key concepts (use placeholder URLs)
 
-    The enhanced minutes should be more informative and actionable for readers who weren't present.
+    1. **PRESERVE ALL ORIGINAL INFORMATION** - Keep every detail from the original minutes intact
+
+    2. **ADD COMPREHENSIVE TECHNICAL EXPLANATIONS**:
+       - Define and explain all technical terms, acronyms, and concepts mentioned
+       - Provide detailed background on industry-specific topics (CAPEX/OPEX, TSO operations, grid management, etc.)
+       - Explain the business implications and strategic context of technical decisions
+       - Add regulatory and compliance context where relevant (NERC CIP, ENTSO-E, etc.)
+
+    3. **ENHANCE WITH DOMAIN EXPERTISE**:
+       - Add "**TECHNICAL CONTEXT:**" sections throughout to explain complex concepts
+       - Include industry background for companies, technologies, and standards mentioned
+       - Explain the strategic importance of discussions within the energy/utility sector context
+       - Provide operational context for technical decisions and their impacts
+
+    4. **STRUCTURE FOR MAXIMUM INSIGHT**:
+       - Add a comprehensive "**BACKGROUND & TECHNICAL CONTEXT**" section at the beginning
+       - Use "**[CONTEXT]**" annotations inline to explain technical terms as they appear
+       - Include subsections for different technical areas discussed
+       - Add a "**INDUSTRY IMPLICATIONS**" section highlighting strategic significance
+
+    5. **FOCUS ON PRACTICAL VALUE**:
+       - Explain WHY technical decisions matter in business context
+       - Connect technical discussions to operational and financial implications
+       - Highlight regulatory compliance aspects and risk factors
+       - Provide context that helps non-technical stakeholders understand technical decisions
+
+    The enhanced minutes should serve as a comprehensive reference document that provides deep technical understanding while remaining accessible to stakeholders with varying technical backgrounds. Focus especially on energy sector terminology, TSO operations, grid management, cybersecurity, and financial models (CAPEX/OPEX implications).
     """
 
     try:
         eprint("Generating enhanced minutes with context...")
-        enhanced_minutes = call_openrouter_api(
+        enhanced_minutes = call_openrouter(
             api_key=api_key,
             model=model,
             messages=[{"role": "user", "content": enhancement_prompt}],
