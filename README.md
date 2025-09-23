@@ -136,6 +136,19 @@ TalkScribe automatically detects meeting domains and provides targeted technical
 2. **Targeted Knowledge**: Applies relevant technical knowledge base for the detected domain
 3. **Contextual Enhancement**: Provides industry-specific explanations, compliance frameworks, and best practices
 
+### Test Results
+**Energy Sector Meeting (IAL.m4a)**:
+```
+Detected domain: energy_utility
+Research topics: CRA compliance, EU procurement rules, digital assets treatment,
+                 open source value appreciation, CAPEX vs OPEX models
+Context provided: Grid operations, regulatory frameworks (FERC, NERC),
+                 financial structures, control room authentication,
+                 procurement directives, digital transformation
+```
+
+The system correctly identified the utility sector context and provided comprehensive technical explanations for energy-specific terminology, regulatory compliance requirements, and financial models relevant to the discussion.
+
 ### Enhanced Context Usage
 ```bash
 # Automatic domain detection and context enhancement
