@@ -8,8 +8,9 @@ A Python-based meeting minutes generator that uses OpenRouter API to transcribe 
 - **Modular workflow**: Separate transcription and minutes generation
 - **Multiple detail levels**: Basic, detailed, anonymous detailed, and ultra-detailed minutes
 - **Smart model selection**: Cost-effective model selection for different phases
-- **Advanced context enhancement**: Deep technical knowledge integration with domain expertise
-- **Energy sector specialization**: TSO/utility-specific technical explanations (CAPEX/OPEX, grid operations, compliance)
+- **Adaptive context enhancement**: Automatically detects meeting domain and provides relevant technical knowledge
+- **Multi-industry support**: Specialized knowledge for energy/utility, technology/software, finance/banking, healthcare, manufacturing, and more
+- **Smart domain detection**: AI-powered classification of meeting content for targeted context
 - **Chunked processing**: Handles large files efficiently
 
 ## Quick Start
@@ -118,32 +119,41 @@ make run ARGS="--transcript transcript.txt --minutes-only --out minutes_anonymou
 | `make minutes` | Direct audio → minutes | 13/20 |
 | `make run ARGS="..."` | Custom parameters | Variable |
 
-## Context Enhancement Features
+## Adaptive Context Enhancement
 
-TalkScribe includes comprehensive technical context enhancement, particularly specialized for the energy/utility sector:
+TalkScribe automatically detects meeting domains and provides targeted technical context across multiple industries:
 
-### Energy Sector Knowledge Base
-- **TSO/DSO Operations**: Grid balancing, SCADA systems, transmission networks
-- **Financial Models**: CAPEX vs OPEX implications for utilities, regulatory frameworks
-- **Compliance Standards**: NERC CIP, ENTSO-E, IEC standards (61850, 62443)
-- **Technology Integration**: Smart grid, renewable integration, cybersecurity frameworks
-- **Procurement & Risk**: Open source adoption, SBOM requirements, supply chain security
+### Supported Domains
+- **Energy/Utility**: TSO/DSO operations, CAPEX/OPEX models, NERC CIP, ENTSO-E, renewable integration
+- **Technology/Software**: Microservices, cloud architecture, DevOps, API design, containerization
+- **Finance/Banking**: Risk management, algorithmic trading, RegTech, DeFi, Basel compliance
+- **Healthcare/Medical**: HIPAA compliance, EHR systems, telemedicine, clinical workflows
+- **Manufacturing/Industrial**: Industry 4.0, supply chain, lean manufacturing, quality control
+- **General Corporate**: Business strategy, digital transformation, operational excellence
+
+### How It Works
+1. **Smart Detection**: AI analyzes meeting content to identify the primary industry domain
+2. **Targeted Knowledge**: Applies relevant technical knowledge base for the detected domain
+3. **Contextual Enhancement**: Provides industry-specific explanations, compliance frameworks, and best practices
 
 ### Enhanced Context Usage
 ```bash
-# Enhanced minutes with comprehensive technical context
+# Automatic domain detection and context enhancement
 make minutes-enhanced TRANSCRIPT=transcript.txt OUT=enhanced_minutes.txt
 
-# Custom enhanced minutes with domain focus
-make run ARGS="--transcript transcript.txt --minutes-only --out context_minutes.txt --enhance --synthesis map-reduce --chunk-tokens 4000 --model anthropic/claude-3.5-sonnet --focus 'CAPEX vs OPEX discussions, TSO operations, cybersecurity compliance'"
+# The system will automatically:
+# 1. Detect the meeting domain (energy_utility, technology_software, etc.)
+# 2. Apply relevant knowledge base and terminology
+# 3. Provide domain-specific technical explanations
 ```
 
-The enhanced context provides:
-- **Technical Glossaries**: Definitions and explanations of industry terminology
-- **Regulatory Context**: Compliance frameworks and their business implications
-- **Financial Analysis**: CAPEX/OPEX implications and regulatory treatment
-- **Industry Background**: Strategic context for technical decisions
-- **Best Practices**: Implementation recommendations based on industry standards
+The adaptive context provides:
+- **Smart Domain Detection**: Automatically identifies industry context from meeting content
+- **Technical Glossaries**: Domain-specific definitions and explanations
+- **Regulatory Context**: Relevant compliance frameworks (NERC CIP, HIPAA, Basel, etc.)
+- **Financial Analysis**: Business model implications (CAPEX/OPEX, risk management, etc.)
+- **Industry Background**: Strategic context and operational considerations
+- **Best Practices**: Implementation recommendations based on domain standards
 
 ## Parameters
 

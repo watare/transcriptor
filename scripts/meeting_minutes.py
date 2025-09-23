@@ -664,48 +664,85 @@ def synthesize_minutes_full(
     )
 
 
-def web_search_simple(query: str) -> str:
-    """Enhanced knowledge base with domain-specific information for energy/utility sector"""
+def web_search_simple(query: str, domain: str = "general_corporate") -> str:
+    """Enhanced knowledge base with domain-specific information"""
     import urllib.parse
     try:
-        # Enhanced knowledge base with detailed technical explanations
-        search_results = {
-            # Energy/TSO specific terms
-            "CAPEX vs OPEX": "Capital Expenditure (CAPEX) vs Operational Expenditure (OPEX) in TSO context: CAPEX includes investments in transmission infrastructure (substations, power lines, transformers), grid automation systems, and cybersecurity infrastructure that provide long-term value. OPEX covers daily operational costs like maintenance, monitoring, staff, software licenses, and cloud services. TSOs are increasingly shifting from CAPEX-heavy infrastructure to OPEX models through cloud services, SaaS solutions, and outsourced maintenance to improve financial flexibility and reduce upfront investment risks.",
+        # Multi-domain knowledge base - organized by industry domain
+        all_search_results = {
+            # Common/Cross-industry terms
+            "common": {
+                "CAPEX vs OPEX": "Capital Expenditure (CAPEX) vs Operational Expenditure (OPEX): CAPEX includes investments in infrastructure, systems, and equipment providing long-term value. OPEX covers daily operational costs like maintenance, staff, software licenses, and services. Organizations shift from CAPEX-heavy models to OPEX through cloud services and SaaS for improved financial flexibility.",
 
-            "TSO": "Transmission System Operator (TSO) is responsible for maintaining electricity transmission networks, ensuring grid stability, and managing cross-border electricity flows. Key responsibilities include: real-time grid balancing, capacity planning, market operations, interconnection management, and renewable integration. TSOs face challenges in digitalization, cybersecurity (NERC CIP compliance), aging infrastructure replacement, and accommodating distributed energy resources.",
+                "digital transformation": "Digital transformation involves modernizing business operations through technology adoption: cloud migration, data analytics, AI/ML integration, process automation, and digital customer experiences. Key challenges include change management, cybersecurity, legacy system integration, and workforce upskilling.",
 
-            "transmission system operator": "Transmission System Operator (TSO) manages high-voltage electricity transmission networks (typically 110kV and above), ensuring reliable electricity supply across regions and countries. TSOs coordinate with Distribution System Operators (DSOs), manage electricity markets, provide ancillary services for grid stability, and facilitate renewable energy integration through grid flexibility mechanisms.",
+                "cybersecurity": "Modern cybersecurity frameworks address: threat detection and response, identity and access management, data protection, network security, and compliance. Organizations adopt zero-trust architectures, security awareness training, and incident response plans to protect against evolving cyber threats.",
 
-            "grid balancing": "Grid balancing in TSO operations involves continuously matching electricity supply and demand in real-time to maintain system frequency at 50Hz/60Hz. TSOs use various tools: automatic generation control (AGC), frequency response services, demand response programs, energy storage systems, and cross-border balancing cooperation. Modern challenges include handling variable renewable energy sources and maintaining stability with reduced system inertia.",
+                "open source": "Open source software adoption requires evaluation of: community health, security practices, licensing compliance, support availability, and total cost of ownership. Organizations benefit from reduced vendor lock-in, transparency, and community-driven innovation while managing security and maintenance responsibilities.",
 
-            "NERC CIP": "North American Electric Reliability Corporation (NERC) Critical Infrastructure Protection (CIP) standards mandate cybersecurity controls for bulk electric system assets. Requirements include: asset identification, security management controls, personnel training, system security plans, incident reporting, and recovery planning. TSOs must implement defense-in-depth strategies, network segmentation, access controls, and continuous monitoring to protect critical cyber assets from cyber threats.",
+                "SBOM": "Software Bill of Materials (SBOM) provides transparency into software components for vulnerability tracking, license compliance, and supply chain risk management. Critical for security assurance and regulatory compliance across industries."
+            },
 
-            "ENTSO-E": "European Network of Transmission System Operators for Electricity (ENTSO-E) represents 39 TSOs from 35 countries, coordinating cross-border electricity transmission and market operations. Key activities include: developing network codes, publishing transparency data, coordinating grid planning (Ten-Year Network Development Plan), and facilitating the European electricity market integration through mechanisms like capacity allocation and congestion management.",
+            # Energy/Utility specific
+            "energy_utility": {
+                "TSO": "Transmission System Operator (TSO) manages high-voltage electricity transmission networks, ensuring grid stability and cross-border electricity flows. Responsibilities include real-time balancing, capacity planning, market operations, and renewable integration.",
 
-            "smart grid": "Smart grid technologies enable two-way communication between utilities and customers, integrating advanced metering infrastructure (AMI), distribution automation, demand response systems, and renewable energy resources. For TSOs, smart grid implementation involves: wide-area monitoring systems (WAMS), phasor measurement units (PMUs), advanced control systems, and data analytics platforms for improved grid observability and control.",
+                "DSO": "Distribution System Operator (DSO) manages medium/low-voltage networks delivering electricity to end users. Key functions include grid maintenance, customer connections, demand response, and distributed energy resource integration.",
 
-            # Open source and technology
-            "open source procurement": "Open source software procurement in utility/TSO environments requires specialized evaluation criteria: security assessment (vulnerability management, code auditing), compliance with industry standards (IEC 61850, IEEE standards), long-term support availability, vendor/community ecosystem stability, integration capabilities with existing SCADA/EMS systems, and intellectual property considerations. Leading utilities are adopting open source solutions for grid management, data analytics, and cybersecurity tools.",
+                "grid balancing": "Grid balancing involves matching electricity supply and demand in real-time to maintain system frequency. Uses automatic generation control, frequency response services, energy storage, and cross-border cooperation.",
 
-            "SBOM": "Software Bill of Materials (SBOM) is crucial for TSO cybersecurity programs under NERC CIP requirements. SBOMs provide transparency into software components, enabling vulnerability tracking, license compliance, and supply chain risk management. TSOs must maintain SBOMs for all critical cyber assets, track open source components, monitor security advisories, and implement patch management procedures to maintain grid security.",
+                "NERC CIP": "North American Electric Reliability Corporation Critical Infrastructure Protection standards mandate cybersecurity controls for bulk electric systems. Requirements include asset identification, security controls, training, and incident response.",
 
-            "L&F Energy": "Linux Foundation Energy (LF Energy) hosts open source projects for the energy transition, including: SOGNO (smart grid simulation), OpenEAS (energy analytics), RIAPS (resilient information architecture), and CoMPAS (configuration modules for power industry standard). These projects help TSOs and utilities accelerate digitalization through collaborative development of grid management, simulation, and automation tools.",
+                "renewable integration": "Integrating variable renewable energy sources requires grid flexibility mechanisms: energy storage, demand response, enhanced forecasting, and market mechanisms to manage variability while maintaining system stability."
+            },
 
-            "digital transformation": "Digital transformation in TSO operations encompasses: cloud adoption for scalability and cost optimization, AI/ML for predictive maintenance and grid optimization, IoT sensors for enhanced asset monitoring, blockchain for energy trading, digital twins for grid simulation, and advanced analytics for demand forecasting. Key challenges include cybersecurity, regulatory compliance, workforce upskilling, and legacy system integration.",
+            # Technology/Software specific
+            "technology_software": {
+                "microservices": "Microservices architecture decomposes applications into small, independent services communicating via APIs. Benefits include scalability, technology diversity, fault isolation, and team independence. Challenges include complexity, network latency, and distributed system management.",
 
-            # Industry trends
-            "renewable integration": "TSO renewable integration challenges include: grid stability with variable generation, forecasting accuracy for wind/solar output, ancillary services procurement from renewable sources, transmission congestion management, and curtailment minimization. Solutions involve: enhanced weather forecasting, energy storage deployment, demand response programs, grid flexibility markets, and cross-border balancing cooperation to manage renewable variability.",
+                "API": "Application Programming Interface (API) enables software components to communicate. Modern APIs use REST, GraphQL, or gRPC protocols. API management includes design, security, versioning, rate limiting, and monitoring for reliable integrations.",
 
-            "energy transition": "The energy transition requires TSO adaptation to: increasing renewable penetration, electrification of transport and heating, distributed energy resources (DER) integration, sector coupling (power-to-X technologies), and carbon neutrality goals. TSOs are investing in grid flexibility, digitalization, offshore wind connections, and hydrogen infrastructure to support decarbonization while maintaining system security.",
+                "cloud migration": "Cloud migration strategies include lift-and-shift, re-platforming, and cloud-native refactoring. Considerations include cost optimization, security, compliance, performance, and vendor lock-in. Hybrid and multi-cloud approaches provide flexibility.",
 
-            "grid flexibility": "Grid flexibility mechanisms enable TSOs to manage variability and uncertainty from renewable sources through: demand response programs, energy storage systems, flexible generation resources, sector coupling technologies, and cross-border cooperation. Market-based flexibility procurement includes: balancing services, congestion management, and grid ancillary services markets.",
+                "DevOps": "DevOps combines development and operations practices to accelerate software delivery through automation, continuous integration/delivery, infrastructure as code, and monitoring. Focuses on collaboration, reliability, and faster time-to-market.",
 
-            # Cybersecurity and compliance
-            "cybersecurity": "TSO cybersecurity frameworks address: industrial control system (ICS) protection, network segmentation, security monitoring, incident response, and supply chain security. Key standards include NERC CIP, ISO/IEC 27001, NIST Cybersecurity Framework, and IEC 62443 for industrial systems. Modern threats target SCADA systems, requiring defense-in-depth strategies and continuous security assessment.",
+                "containerization": "Containerization packages applications with dependencies for consistent deployment across environments. Docker and Kubernetes enable scalable, portable applications with improved resource utilization and deployment automation."
+            },
 
-            "IEC 61850": "International Electrotechnical Commission (IEC) 61850 standard defines communication protocols and data models for electrical substations, enabling interoperability between protection, control, and monitoring systems. For TSOs, IEC 61850 facilitates: standardized substation automation, real-time communication, centralized control, and reduced engineering costs through vendor-independent solutions."
+            # Finance/Banking specific
+            "finance_banking": {
+                "risk management": "Financial risk management identifies, measures, and mitigates risks including market risk, credit risk, operational risk, and liquidity risk. Uses quantitative models, stress testing, and regulatory frameworks like Basel III for capital adequacy.",
+
+                "algorithmic trading": "Algorithmic trading uses computer programs to execute trades based on predefined criteria. Strategies include market making, arbitrage, and trend following. Requires low-latency infrastructure, risk controls, and regulatory compliance.",
+
+                "RegTech": "Regulatory Technology (RegTech) automates compliance processes using AI, machine learning, and data analytics. Applications include transaction monitoring, reporting, KYC/AML compliance, and regulatory change management.",
+
+                "DeFi": "Decentralized Finance (DeFi) recreates traditional financial services using blockchain and smart contracts. Includes lending, trading, derivatives, and insurance without traditional intermediaries. Risks include smart contract vulnerabilities and regulatory uncertainty."
+            },
+
+            # Healthcare specific
+            "healthcare_medical": {
+                "HIPAA": "Health Insurance Portability and Accountability Act (HIPAA) establishes privacy and security standards for protected health information. Requires administrative, physical, and technical safeguards, breach notification, and business associate agreements.",
+
+                "electronic health records": "Electronic Health Records (EHR) digitize patient information for improved care coordination, clinical decision support, and population health management. Interoperability standards like HL7 FHIR enable data exchange between systems.",
+
+                "telemedicine": "Telemedicine delivers healthcare services remotely using telecommunications technology. Includes virtual consultations, remote monitoring, and digital therapeutics. Regulatory considerations include licensing, reimbursement, and privacy compliance."
+            },
+
+            # Manufacturing specific
+            "manufacturing_industrial": {
+                "Industry 4.0": "Industry 4.0 represents the fourth industrial revolution integrating cyber-physical systems, IoT, cloud computing, and AI in manufacturing. Enables smart factories with autonomous systems, predictive maintenance, and mass customization.",
+
+                "supply chain": "Modern supply chains integrate suppliers, manufacturers, and distributors through digital platforms. Challenges include visibility, resilience, sustainability, and risk management. Technologies include blockchain for traceability and AI for optimization.",
+
+                "lean manufacturing": "Lean manufacturing eliminates waste through continuous improvement (kaizen), just-in-time production, and value stream mapping. Focuses on customer value, flow optimization, and employee engagement for operational excellence."
+            }
         }
+
+        # Select appropriate domain knowledge base
+        domain_results = all_search_results.get(domain, {})
+        common_results = all_search_results.get("common", {})
+        search_results = {**common_results, **domain_results}
 
         # Find best matching result with fuzzy matching
         query_lower = query.lower()
@@ -730,14 +767,63 @@ def web_search_simple(query: str) -> str:
         if best_match and max_matches > 0:
             return best_match
 
-        # Generic fallback with more detailed explanation
-        if any(term in query_lower for term in ['energy', 'power', 'grid', 'utility', 'electricity']):
-            return f"Energy sector research indicates '{query}' is an emerging topic with increasing importance for grid modernization, renewable integration, and digital transformation initiatives. Consider consulting ENTSO-E reports, IEA energy transition roadmaps, or utility industry publications for detailed analysis."
-        else:
-            return f"Industry research suggests '{query}' is gaining attention across multiple sectors, with particular relevance to digital transformation and operational efficiency initiatives."
+        # Domain-aware fallback explanations
+        domain_fallbacks = {
+            "energy_utility": f"Energy sector research indicates '{query}' is an emerging topic with increasing importance for grid modernization, renewable integration, and digital transformation initiatives. Consider consulting ENTSO-E reports, IEA energy transition roadmaps, or utility industry publications for detailed analysis.",
+            "technology_software": f"Technology research suggests '{query}' is gaining attention in software development and IT operations, with relevance to cloud adoption, DevOps practices, and digital transformation initiatives. Consider consulting industry reports from Gartner, Stack Overflow surveys, or CNCF landscape analysis.",
+            "finance_banking": f"Financial services research indicates '{query}' is an emerging topic with growing importance for risk management, regulatory compliance, and digital banking transformation. Consider consulting reports from central banks, Basel Committee publications, or fintech industry analysis.",
+            "healthcare_medical": f"Healthcare research suggests '{query}' is gaining attention with relevance to patient care, regulatory compliance, and healthcare technology adoption. Consider consulting FDA guidance, healthcare industry publications, or medical technology assessments.",
+            "manufacturing_industrial": f"Manufacturing research indicates '{query}' is an emerging topic with importance for operational efficiency, supply chain optimization, and Industry 4.0 transformation. Consider consulting industrial automation reports, supply chain management publications, or manufacturing technology assessments.",
+            "general_corporate": f"Industry research suggests '{query}' is gaining attention across multiple sectors, with particular relevance to digital transformation, operational efficiency, and strategic business initiatives."
+        }
+
+        fallback_message = domain_fallbacks.get(domain, domain_fallbacks["general_corporate"])
+        return fallback_message
 
     except Exception as e:
         return f"[Knowledge base lookup failed: {e}]"
+
+
+def detect_meeting_domain(minutes_text: str, api_key: str, model: str = "openai/gpt-4o-mini") -> str:
+    """Detect the primary domain/industry context of the meeting"""
+    prompt = """
+    Analyze these meeting minutes and identify the primary domain/industry context.
+
+    Choose the MOST RELEVANT domain from these categories:
+    - energy_utility (power grid, TSO/DSO, electricity markets, renewable energy)
+    - finance_banking (financial services, trading, investment, risk management)
+    - technology_software (software development, IT, cloud, cybersecurity, SaaS)
+    - healthcare_medical (healthcare, pharmaceuticals, medical devices, clinical)
+    - manufacturing_industrial (manufacturing, supply chain, industrial processes)
+    - government_public (government, public sector, policy, regulation)
+    - consulting_professional (consulting, legal, professional services)
+    - academia_research (academic, research, education, scientific)
+    - startup_business (startups, entrepreneurship, venture capital, business development)
+    - general_corporate (general corporate meetings, HR, operations)
+
+    Return ONLY the domain category (e.g., "energy_utility" or "technology_software").
+
+    Meeting minutes:
+    """ + minutes_text[:2000]  # Use first 2000 chars for domain detection
+
+    try:
+        response = call_openrouter(
+            api_key=api_key,
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.1,
+        )
+        domain = response.strip().lower()
+        # Validate domain response
+        valid_domains = [
+            "energy_utility", "finance_banking", "technology_software",
+            "healthcare_medical", "manufacturing_industrial", "government_public",
+            "consulting_professional", "academia_research", "startup_business", "general_corporate"
+        ]
+        return domain if domain in valid_domains else "general_corporate"
+    except Exception as e:
+        eprint(f"Failed to detect meeting domain: {e}")
+        return "general_corporate"
 
 
 def extract_search_topics(minutes_text: str, api_key: str, model: str = "openai/gpt-4o-mini") -> List[str]:
@@ -749,6 +835,8 @@ def extract_search_topics(minutes_text: str, api_key: str, model: str = "openai/
     - Company names, projects, or initiatives mentioned
     - Industry trends or regulatory topics discussed
     - Specific technologies or standards referenced
+    - Financial concepts or business models discussed
+    - Compliance or regulatory frameworks mentioned
 
     Return only a simple list of search queries, one per line.
 
@@ -770,7 +858,12 @@ def extract_search_topics(minutes_text: str, api_key: str, model: str = "openai/
 
 
 def enhance_minutes_with_context(minutes_text: str, api_key: str, model: str = "anthropic/claude-3.5-sonnet") -> str:
-    """Enhance minutes with web research context"""
+    """Enhance minutes with domain-aware web research context"""
+    # Detect meeting domain automatically
+    eprint("Detecting meeting domain...")
+    detected_domain = detect_meeting_domain(minutes_text, api_key)
+    eprint(f"Detected domain: {detected_domain}")
+
     eprint("Extracting topics for web research...")
     topics = extract_search_topics(minutes_text, api_key)
 
@@ -778,18 +871,29 @@ def enhance_minutes_with_context(minutes_text: str, api_key: str, model: str = "
         eprint("No topics extracted for enhancement")
         return minutes_text
 
-    eprint(f"Researching {len(topics)} topics...")
+    eprint(f"Researching {len(topics)} topics with {detected_domain} context...")
 
-    # For now, simulate web research results
+    # Research topics with domain-specific knowledge
     research_context = []
     for topic in topics:
         eprint(f"  → Researching: {topic}")
-        search_result = web_search_simple(topic)
+        search_result = web_search_simple(topic, detected_domain)
         research_context.append(f"**{topic}**: {search_result}")
 
-    # Enhance the minutes with research context
+    # Create domain-aware enhancement prompt
+    domain_specific_guidance = {
+        "energy_utility": "Focus on energy sector terminology, TSO/DSO operations, grid management, renewable integration, CAPEX/OPEX models, regulatory compliance (NERC CIP, ENTSO-E), and cybersecurity frameworks.",
+        "technology_software": "Focus on software development practices, cloud technologies, API design, DevOps methodologies, cybersecurity frameworks, and technology architecture decisions.",
+        "finance_banking": "Focus on financial terminology, risk management, regulatory compliance (Basel, MIFID), trading systems, payment technologies, and fintech innovations.",
+        "healthcare_medical": "Focus on medical terminology, patient care protocols, regulatory compliance (HIPAA, FDA), healthcare technology, and clinical decision-making processes.",
+        "manufacturing_industrial": "Focus on manufacturing processes, supply chain management, Industry 4.0 technologies, quality control systems, and operational efficiency initiatives.",
+        "general_corporate": "Focus on business strategy, organizational structure, financial management, technology adoption, and operational excellence principles."
+    }
+
+    domain_focus = domain_specific_guidance.get(detected_domain, domain_specific_guidance["general_corporate"])
+
     enhancement_prompt = f"""
-    You are an expert meeting analyst with deep knowledge of the energy sector, TSO operations, and technology. Enhance these meeting minutes by integrating comprehensive technical context and background information.
+    You are an expert meeting analyst with deep domain knowledge. Enhance these meeting minutes by integrating comprehensive technical context and background information for the {detected_domain.replace('_', '/')} domain.
 
     Original minutes:
     {minutes_text}
@@ -803,21 +907,21 @@ def enhance_minutes_with_context(minutes_text: str, api_key: str, model: str = "
 
     2. **ADD COMPREHENSIVE TECHNICAL EXPLANATIONS**:
        - Define and explain all technical terms, acronyms, and concepts mentioned
-       - Provide detailed background on industry-specific topics (CAPEX/OPEX, TSO operations, grid management, etc.)
+       - Provide detailed background on industry-specific topics and business models
        - Explain the business implications and strategic context of technical decisions
-       - Add regulatory and compliance context where relevant (NERC CIP, ENTSO-E, etc.)
+       - Add regulatory and compliance context where relevant
 
     3. **ENHANCE WITH DOMAIN EXPERTISE**:
        - Add "**TECHNICAL CONTEXT:**" sections throughout to explain complex concepts
        - Include industry background for companies, technologies, and standards mentioned
-       - Explain the strategic importance of discussions within the energy/utility sector context
+       - Explain the strategic importance of discussions within the specific industry context
        - Provide operational context for technical decisions and their impacts
 
     4. **STRUCTURE FOR MAXIMUM INSIGHT**:
        - Add a comprehensive "**BACKGROUND & TECHNICAL CONTEXT**" section at the beginning
        - Use "**[CONTEXT]**" annotations inline to explain technical terms as they appear
        - Include subsections for different technical areas discussed
-       - Add a "**INDUSTRY IMPLICATIONS**" section highlighting strategic significance
+       - Add an "**INDUSTRY IMPLICATIONS**" section highlighting strategic significance
 
     5. **FOCUS ON PRACTICAL VALUE**:
        - Explain WHY technical decisions matter in business context
@@ -825,7 +929,9 @@ def enhance_minutes_with_context(minutes_text: str, api_key: str, model: str = "
        - Highlight regulatory compliance aspects and risk factors
        - Provide context that helps non-technical stakeholders understand technical decisions
 
-    The enhanced minutes should serve as a comprehensive reference document that provides deep technical understanding while remaining accessible to stakeholders with varying technical backgrounds. Focus especially on energy sector terminology, TSO operations, grid management, cybersecurity, and financial models (CAPEX/OPEX implications).
+    **Domain-Specific Focus**: {domain_focus}
+
+    The enhanced minutes should serve as a comprehensive reference document that provides deep technical understanding while remaining accessible to stakeholders with varying technical backgrounds.
     """
 
     try:
