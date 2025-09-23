@@ -1,6 +1,8 @@
-# Local environment secrets
+# Environment files
 .env
 .env.local
+.env.production
+.env.staging
 
 # Python
 __pycache__/
@@ -17,8 +19,38 @@ env/
 .idea/
 .vscode/
 
-# Outputs
+# Audio/video files (typically large and sensitive)
+*.mp3
 *.mp4
 *.m4a
 *.wav
+*.avi
+*.mov
+*.webm
+*.ogg
+*.flac
+
+# Generated transcripts and minutes (potentially sensitive)
 *.txt
+!README.txt
+!requirements.txt
+transcripts/
+minutes/
+output/
+
+# Temporary audio processing files
+seg_*.wav
+temp_audio/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
